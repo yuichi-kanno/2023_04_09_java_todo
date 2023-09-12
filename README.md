@@ -1,14 +1,11 @@
 SpringBootのファイル名の役割
+一部はあくまでこのファイル内での役割を記載している部分もあります。
+
+
 ### MVCとは
 Model:主にデータベースとのデータのやりとりを行う
 View:ユーザーとWebサイトとのインターフェイス。画面表示。
 COntroller:ModelとViewの橋渡し。
-
-
-
-
-jdbcTemplateとは
-
 
 ### @Controllerとは
 classの上部に@controllerというアノテーションを付与すると、SpringBoot側がそのクラスを Controller として認識する。
