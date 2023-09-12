@@ -133,13 +133,15 @@ public class TaskController {
     	@RequestParam("taskId") int taskId,
     	Model model,
     	RedirectAttributes redirectAttributes) {
+        //TaskFormのデータをTaskに格納
+        Task task = makeTask(taskForm, taskId);
 
         if (!result.hasErrors()) {
-        	//TaskFormのデータをTaskに格納
-
         	//更新処理、フラッシュスコープの使用、リダイレクト（個々の編集ページ）
+            taskService.update(task);
+            redirectAttributes.addFlashAttribute("complete", "変更が完了しました。");
 
-            return "" ;
+            return "redirect:/task/"  + taskId;
         } else {
             model.addAttribute("taskForm", taskForm);
             model.addAttribute("title", "タスク一覧");
@@ -159,8 +161,9 @@ public class TaskController {
     	Model model) {
 
     	//タスクを一件削除しリダイレクト
+        taskService.deleteById(id);
 
-        return "";
+        return "redirect:/task";
     }
 
     /**
