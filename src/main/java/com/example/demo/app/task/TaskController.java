@@ -66,22 +66,20 @@ public class TaskController {
     	@Valid @ModelAttribute TaskForm taskForm,
         BindingResult result,
         Model model) {
+        //TaskFormのデータをTaskに格納
+        // makeTaskはファイル下部に定義
+        Task task = makeTask(taskForm, 0);
 
         if (!result.hasErrors()) {
-        	//削除してください
-        	Task task = null;
-
-        	//TaskFormのデータをTaskに格納
-
         	//一件挿入後リダイレクト
-
-            return "";
+            taskService.insert(task);
+            return "redirect:/task";
         } else {
             taskForm.setNewTask(true);
             model.addAttribute("taskForm", taskForm);
             List<Task> list = taskService.findAll();
             model.addAttribute("list", list);
-            model.addAttribute("title", "タスク一覧（バリデーション）");
+            model.addAttribute("title", "タスク追加できませんでした");
             return "task/index";
         }
     }
@@ -100,12 +98,18 @@ public class TaskController {
         Model model) {
 
     	//Taskを取得(Optionalでラップ)
+        Optional<Task> taskOpt = taskService.getTask(id);
 
         //TaskFormへの詰め直し
+        // makeTaskFormはファイル下部に定義
+        Optional<TaskForm> taskFormOpt = taskOpt.map(t -> makeTaskForm(t));
 
         //TaskFormがnullでなければ中身を取り出し
+        if (taskFormOpt.isPresent()) {
+            taskForm = taskFormOpt.get();
+        }
 
-        model.addAttribute("taskForm", "");
+        model.addAttribute("taskForm", taskForm);
         List<Task> list = taskService.findAll();
         model.addAttribute("list", list);
         model.addAttribute("taskId", id);
