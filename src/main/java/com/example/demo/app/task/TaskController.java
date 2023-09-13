@@ -49,7 +49,7 @@ public class TaskController {
         List<Task> list = taskService.findAll();
 
         model.addAttribute("list", list);
-        model.addAttribute("title", "タスク一覧");
+        model.addAttribute("title", "TODO");
 
         return "task/index";
     }
